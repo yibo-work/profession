@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.CleanDao">
+
+    <select id="findById" resultType="com.model.Clean">
+        select a.`id`,
+               `clean_name`,
+               `content`,
+               a.`description`,
+               `price`,
+               `user_id`,
+               u.name          as user_name,
+               `category_id`,
+               c.category_name as category_name,
+               `type`,
+               a.`status`,
+               a.`create_time`,
+               a.`update_time`,
+               clicked
+        from clean a
+                 left join user u on a.user_id = u.id
+                 left join category c on a.category_id = c.id
+        where a.id = #{id}
+    </select>
+
+    <select id="findByMap" resultType="com.model.Clean">
+        select a.`id`,
+        `clean_name`,
+        `content`,
+        a.`description`,
+        `price`,
+        `user_id`,
+        u.name as user_name,
+        `category_id`,
+        c.category_name as category_name,
+        `type`,
+        a.`status`,
+        a.`create_time`,
+        a.`update_time`,
+        clicked
+        from clean a
+        left join user u on a.user_id = u.id
+        left join category c on a.category_id = c.id
+        <where>
+            <if test="id != null and id != ''">
+                and a.id = #{id}
+            </if>
+            <if test="cleanName != null and cleanName != ''">
+                and clean_name = #{cleanName}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="description != null and description != ''">
+                and a.description = #{description}
+            </if>
+            <if test="price != null and price != ''">
+                and price = #{price}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                and category_id = #{categoryId}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and a.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="list" resultType="com.model.Clean">
+        select a.`id`,
+        `clean_name`,
+        `content`,
+        a.`description`,
+        `price`,
+        `user_id`,
+        u.name as user_name,
+        `category_id`,
+        c.category_name as category_name,
+        `type`,
+        a.`status`,
+        a.`create_time`,
+        a.`update_time`,
+        clicked
+        from clean a
+        left join user u on a.user_id = u.id
+        left join category c on a.category_id = c.id
+        <where>
+            <if test="id != null and id != ''">and a.id =
+                #{id}
+            </if>
+            <if test="cleanName != null and cleanName != ''">and clean_name =
+                #{cleanName}
+            </if>
+            <if test="content != null and content != ''">and content =
+                #{content}
+            </if>
+            <if test="description != null and description != ''">and a.description =
+                #{description}
+            </if>
+            <if test="price != null and price != ''">and price =
+                #{price}
+            </if>
+            <if test="userId != null and userId != ''">and user_id =
+                #{userId}
+            </if>
+            <if test="categoryId != null and categoryId != ''">and category_id =
+                #{categoryId}
+            </if>
+            <if test="type != null and type != ''">and type =
+                #{type}
+            </if>
+            <if test="status != null and status != ''">and a.status =
+                #{status}
+            </if>
+            <if test="clicked != null and clicked != ''">and a.clicked =
+                #{clicked}
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.model.Clean" useGeneratedKeys="true" keyProperty="id">
+        insert into clean(
+        <trim suffixOverrides=",">
+            <if test="cleanName != null">`clean_name`,</if>
+            <if test="content != null">`content`,</if>
+            <if test="description != null">`description`,</if>
+            <if test="price != null">`price`,</if>
+            <if test="userId != null">`user_id`,</if>
+            <if test="categoryId != null">`category_id`,</if>
+            <if test="type != null">`type`,</if>
+            <if test="status != null">`status`,</if>
+            <if test="createTime != null">`create_time`,</if>
+            <if test="updateTime != null">`update_time`</if>
+        </trim>
+        )
+        values (
+        <trim suffixOverrides=",">
+            <if test="cleanName != null">#{cleanName},</if>
+            <if test="content != null">#{content},</if>
+            <if test="description != null">#{description},</if>
+            <if test="price != null">#{price},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime}</if>
+        </trim>
+        )
+    </insert>
+
+    <update id="update" parameterType="com.model.Clean">
+        update clean
+        <set>
+            <if test="cleanName != null">`clean_name` = #{cleanName}
+                ,
+            </if>
+            <if test="content != null">`content` = #{content}
+                ,
+            </if>
+            <if test="description != null">`description` = #{description}
+                ,
+            </if>
+            <if test="price != null">`price` = #{price}
+                ,
+            </if>
+            <if test="userId != null">`user_id` = #{userId}
+                ,
+            </if>
+            <if test="categoryId != null">`category_id` = #{categoryId}
+                ,
+            </if>
+            <if test="type != null">`type` = #{type}
+                ,
+            </if>
+            <if test="status != null">`status` = #{status}
+                ,
+            </if>
+            <if test="createTime != null">`create_time` = #{createTime}
+                ,
+            </if>
+            <if test="updateTime != null">`update_time` = #{updateTime}
+            </if>
+            <if test="clicked != null">`clicked` = #{clicked}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete
+        from clean
+        where id = #{id}
+    </delete>
+    <update id="addClicked">
+        update clean
+        set clicked = clicked + 1
+        where id = #{id}
+    </update>
+
+</mapper>

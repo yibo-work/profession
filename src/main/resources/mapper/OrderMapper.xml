@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dao.OrderDao">
+
+    <select id="findById" resultType="com.model.Order">
+        select a.`id`,
+               ca.`category_name`,
+               s.clean_name as `clean_name`,
+               a.`category_id`,
+               `clean_id`,
+               a.`user_id`,
+               a.`create_user_id`,
+               a.`to_user_id`,
+               u.name       as `user_name`,
+               `service_id`,
+               d.name       as `service_name`,
+               a.`status`,
+               a.`create_time`
+        from `order` a
+                 left join user u on a.user_id = u.id
+                 left join user d on d.id = a.service_id
+                 left join clean s on a.clean_id = s.id
+                 left join category ca on a.category_id = ca.id
+        where a.id = #{id}
+    </select>
+
+    <select id="findByMap" resultType="com.model.Order">
+        select a.`id`,
+        ca.`category_name`,
+        s.clean_name as `clean_name`,
+        a.`category_id`,
+        `clean_id`,
+        a.`user_id`,
+        a.`create_user_id`,
+        a.`to_user_id`,
+        u.name as `user_name`,
+        `service_id`,
+        d.name as `service_name`,
+        a.`status`,
+        a.`create_time`
+        from `order` a
+        left join user u on a.user_id = u.id
+        left join user d on d.id = a.service_id
+        left join clean s on a.clean_id = s.id
+        left join category ca on a.category_id = ca.id
+        <where>
+            <if test="id != null and id != ''">
+                and a.id = #{id}
+            </if>
+            <if test="categoryName != null and categoryName != ''">
+                and category_name = #{categoryName}
+            </if>
+            <if test="cleanName != null and cleanName != ''">
+                and clean_name = #{cleanName}
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                and a.category_id = #{categoryId}
+            </if>
+            <if test="cleanId != null and cleanId != ''">
+                and clean_id = #{cleanId}
+            </if>
+            <if test="userId != null and userId != ''">
+                and a.user_id = #{userId}
+            </if>
+            <if test="createUserId != null and createUserId != ''">
+                and a.`create_user_id` = #{createUserId}
+            </if><if test="toUserId != null and toUserId != ''">
+                and a.`to_user_id` = #{toUserId}
+            </if>
+            <if test="serviceId != null and serviceId != ''">
+                and service_id = #{serviceId}
+            </if>
+            <if test="status != null and status != ''">
+                and a.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="list" resultType="com.model.Order">
+        select a.`id`,
+        ca.`category_name`,
+        s.clean_name as `clean_name`,
+        a.`category_id`,
+        `clean_id`,
+        a.`user_id`,
+        a.`create_user_id`,
+        a.`to_user_id`,
+        u.name as `user_name`,
+        `service_id`,
+        d.name as `service_name`,
+        a.`status`,
+        a.`create_time`
+        from `order` a
+        left join user u on a.user_id = u.id
+        left join user d on d.id = a.service_id
+        left join clean s on a.clean_id = s.id
+        left join category ca on a.category_id = ca.id
+        <where>
+            <if test="id != null and id != ''">and a.id =
+                #{id}
+            </if>
+            <if test="categoryName != null and categoryName != ''">and category_name =
+                #{categoryName}
+            </if>
+            <if test="cleanName != null and cleanName != ''">and clean_name =
+                #{cleanName}
+            </if>
+            <if test="categoryId != null and categoryId != ''">and a.category_id =
+                #{categoryId}
+            </if>
+            <if test="cleanId != null and cleanId != ''">and clean_id =
+                #{cleanId}
+            </if>
+            <if test="userId != null and userId != ''">and a.user_id =
+                #{userId}
+            </if>
+            <if test="createUserId != null and createUserId != ''">and a.create_user_id =
+                #{createUserId}
+            </if><if test="toUserId != null and toUserId != ''">and a.to_user_id =
+                #{toUserId}
+            </if>
+            <if test="serviceId != null and serviceId != ''">and service_id =
+                #{serviceId}
+            </if>
+            <if test="status != null and status != ''">and a.status =
+                #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.model.Order" useGeneratedKeys="true" keyProperty="id">
+        insert into `order`(
+        <trim suffixOverrides=",">
+            <if test="categoryId != null">`category_id`,</if>
+            <if test="cleanId != null">`clean_id`,</if>
+            <if test="userId != null">`user_id`,</if>
+            <if test="createUserId != null">`create_user_id`,</if>
+            <if test="toUserId != null">`to_user_id`,</if>
+            <if test="serviceId != null">`service_id`,</if>
+            <if test="status != null">`status`,</if>
+            <if test="createTime != null">`create_time`</if>
+        </trim>
+        )
+        values (
+        <trim suffixOverrides=",">
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="cleanId != null">#{cleanId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="toUserId != null">#{toUserId},</if>
+            <if test="serviceId != null">#{serviceId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime}</if>
+        </trim>
+        )
+    </insert>
+
+    <update id="update" parameterType="com.model.Order">
+        update `order`
+        <set>
+            <if test="categoryId != null">`category_id` = #{categoryId}
+                ,
+            </if>
+            <if test="cleanId != null">`clean_id` = #{cleanId}
+                ,
+            </if>
+            <if test="userId != null">`user_id` = #{userId}
+                ,
+            </if>
+            <if test="createUserId != null">`create_user_id` = #{createUserId}
+                ,
+            </if>
+            <if test="toUserId != null">`to_user_id` = #{toUserId}
+                ,
+            </if>
+            <if test="serviceId != null">`service_id` = #{serviceId}
+                ,
+            </if>
+            <if test="status != null">`status` = #{status}
+                ,
+            </if>
+            <if test="createTime != null">`create_time` = #{createTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete
+        from `order`
+        where id = #{id}
+    </delete>
+
+</mapper>
